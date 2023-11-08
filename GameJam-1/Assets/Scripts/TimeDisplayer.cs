@@ -7,16 +7,16 @@ using UnityEngine;
 public class TimeDisplayer : MonoBehaviour {
 
     private TextMeshProUGUI timer;
-    private float startTime;
+    private float timePassed = 0f;
+    [SerializeField] private PlayerController player;
 
     private void Awake() {
         timer = GetComponent<TextMeshProUGUI>();
-        startTime = Time.time;
     }
 
     private void Update() {
-        int timePassed = (int) Mathf.Floor(Time.time - startTime);
-        processTime(timePassed, out int minutes, out int seconds);
+        timePassed += Time.deltaTime/player.GetTimeManipulation();
+        processTime((int) Mathf.Floor(timePassed), out int minutes, out int seconds);
         string text = string.Format("{0}:{1}", addZero(minutes), addZero(seconds));
         timer.SetText(text);
     }
