@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour {
 
-    // private Transform position;
-
-    // private void Awake() {
-    //     position = GetComponent<Transform>();
-    // }
-
     [SerializeField] private float playerSpeed = 5f;
+    private bool rewindTime = false;
+    private List<Vector3> movements = new List<Vector3>();
 
     private void Update() {
-        PlayerMovement();
+        if (rewindTime) {
+            RewindTime();
+        } else {
+            PlayerMovement();
+            RecordMovements();
+        }
     }
 
     private void PlayerMovement() {
@@ -41,13 +44,30 @@ public class PlayerController : MonoBehaviour {
     }
 
     public int GetTimeManipulation() {
+        int manipulationFactor = 1;
+
         if (Input.GetKey(KeyCode.Space)) {
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) {
-                return 4;
+            if (Input.GetKey(KeyCode.Return)) {
+                manipulationFactor = -1;
+                rewindTime = true;
+            } else {
+                manipulationFactor = 2;
+                rewindTime = false;
             }
-            return 2;
         }
-        return 1;
+
+        return manipulationFactor;
+    }
+
+    private void RecordMovements() {
+        movements.Add(transform.position);
+    }
+
+    private void RewindTime() {
+        if (movements.Count() != 0) {
+            transform.position = movements[movements.Count() - 1];
+            movements.RemoveAt(movements.Count() - 1);
+        }
     }
 
 }

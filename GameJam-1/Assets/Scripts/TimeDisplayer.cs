@@ -29,6 +29,10 @@ public class TimeDisplayer : MonoBehaviour {
             seconds -= 60;
             minutes += 1;
         }
+
+        if (seconds < 0) {
+            seconds = 0;
+        }
     }
 
     private string addZero(int time) {
