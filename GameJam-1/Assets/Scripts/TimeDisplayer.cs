@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class TimeDisplayer : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class TimeDisplayer : MonoBehaviour {
+
+    [SerializeField] private TextMeshProUGUI timer;
+    private float startTime;
+
+    private void Awake() {
+        timer = GetComponent<TextMeshProUGUI>();
+        startTime = Time.time;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void Update() {
+        float timePassed = Time.time - startTime;
+        timer.SetText(timePassed.ToString());
     }
+
 }
