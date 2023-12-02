@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private GameObject player;
     private Vector3 screenBounds;
     [SerializeField] private int maximumEnemies = 6;
-    private float spawnDuration = 2f;
+    [SerializeField] private float spawnDuration = 2f;
     private float spawnBound = 2f;
 
 
@@ -26,11 +26,11 @@ public class EnemySpawner : MonoBehaviour {
             
             GameObject spawnedEnemy = Instantiate(enemy);
 
-            float spawnRadius = Random.Range(spawnBound, screenBounds.y);
+            float spawnRadius = Random.Range(spawnBound, screenBounds.x);
             float spawnAngle = Random.Range(-Mathf.PI, Mathf.PI);
             
-            spawnedEnemy.transform.position = new Vector3(spawnRadius * Mathf.Cos(spawnAngle), spawnRadius * Mathf.Sin(spawnAngle), 0);
-            spawnedEnemy.transform.rotation = Quaternion.Euler(0, 0, (Mathf.PI - spawnAngle) * (180/Mathf.PI));
+            spawnedEnemy.transform.position = new Vector3(player.transform.position.x + spawnRadius * Mathf.Cos(spawnAngle), player.transform.position.y + spawnRadius * Mathf.Sin(spawnAngle), 0);
+            spawnedEnemy.transform.rotation = Quaternion.Euler(0, 0, (spawnAngle) * (180/Mathf.PI) + 90);
 
             enemyCount++;
         }
