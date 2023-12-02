@@ -47,12 +47,12 @@ public class PlayerController : MonoBehaviour {
         int manipulationFactor = 1;
 
         if (Input.GetKey(KeyCode.Space)) {
+            manipulationFactor = 2;
+            rewindTime = false;
+            
             if (Input.GetKey(KeyCode.Return)) {
                 manipulationFactor = -1;
                 rewindTime = true;
-            } else {
-                manipulationFactor = 2;
-                rewindTime = false;
             }
         }
 
