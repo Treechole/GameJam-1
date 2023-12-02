@@ -9,7 +9,10 @@ public class EnemySpawner : MonoBehaviour {
     [SerializeField] private GameObject enemy;
     [SerializeField] private GameObject player;
     private Vector3 screenBounds;
+    [SerializeField] private int maximumEnemies = 6;
     private float spawnDuration = 2f;
+    private float spawnBound = 2f;
+
 
     private void Awake() {
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
@@ -17,26 +20,19 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     private IEnumerator SpawnEnemy() {
-        int i = 0;
-        while (i != 5) {
+        int enemyCount = 0;
+        while (enemyCount < maximumEnemies) {
             yield return new WaitForSeconds(spawnDuration);
             
             GameObject spawnedEnemy = Instantiate(enemy);
-            spawnedEnemy.transform.position = new Vector3(Random.Range(-screenBounds.x, screenBounds.x), Random.Range(-screenBounds.y, screenBounds.y), 0);
-            
-            if (player.transform.position.x == spawnedEnemy.transform.position.x) {
-                if (spawnedEnemy.transform.position.y > 0) {
-                    spawnedEnemy.transform.rotation = Quaternion.Euler(0, 0, 180);
-                }
-            } else {
-                int dir_rotation = -90;
-                if (spawnedEnemy.transform.position.x > 0) {
-                    dir_rotation = +90;
-                }
-                spawnedEnemy.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan((player.transform.position.y - spawnedEnemy.transform.position.y) / (player.transform.position.x - spawnedEnemy.transform.position.x))*(180/Mathf.PI) + dir_rotation);
-            }
 
-            i++;
+            float spawnRadius = Random.Range(spawnBound, screenBounds.y);
+            float spawnAngle = Random.Range(-Mathf.PI, Mathf.PI);
+            
+            spawnedEnemy.transform.position = new Vector3(spawnRadius * Mathf.Cos(spawnAngle), spawnRadius * Mathf.Sin(spawnAngle), 0);
+            spawnedEnemy.transform.rotation = Quaternion.Euler(0, 0, (Mathf.PI - spawnAngle) * (180/Mathf.PI));
+
+            enemyCount++;
         }
     }
 }
