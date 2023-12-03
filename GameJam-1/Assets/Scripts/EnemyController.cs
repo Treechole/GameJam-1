@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Animations;
 
 public class EnemyController : MonoBehaviour {
     private GameObject player;
+    private BulletController bulletShooter;
     [SerializeField] private float rotateSpeed = 5f;
 
     private void Awake() {
         player = GameObject.Find("/Player");
+        bulletShooter = GetComponent<BulletController>();
+        StartCoroutine(bulletShooter.ShootPlayer(player.transform, transform));
     }
 
     private void Update() {

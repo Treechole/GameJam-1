@@ -10,6 +10,11 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float playerSpeed = 5f;
     private bool rewindTime = false;
     private List<Vector3> movements = new List<Vector3>();
+    private BulletController bulletShooter;
+
+    private void Awake() {
+        bulletShooter = GetComponent<BulletController>();
+    }
 
     private void Update() {
         if (rewindTime) {
@@ -17,6 +22,9 @@ public class PlayerController : MonoBehaviour {
         } else {
             PlayerMovement();
             RecordMovements();
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                bulletShooter.ShootBullet(transform);
+            }
         }
     }
 
@@ -60,6 +68,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void RecordMovements() {
+        // Limit the number of positions that the list stores
         movements.Add(transform.position);
     }
 

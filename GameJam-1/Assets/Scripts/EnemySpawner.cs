@@ -24,7 +24,7 @@ public class EnemySpawner : MonoBehaviour {
         while (enemyCount < maximumEnemies) {
             yield return new WaitForSeconds(spawnDuration);
             
-            GameObject spawnedEnemy = Instantiate(enemy);
+            GameObject spawnedEnemy = Instantiate(enemy, transform);
 
             float spawnRadius = Random.Range(spawnBound, screenBounds.x);
             float spawnAngle = Random.Range(-Mathf.PI, Mathf.PI);
