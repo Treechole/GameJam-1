@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour {
     public int GetTimeManipulation() {
         int manipulationFactor = 1;
 
-        if (Input.GetKey(KeyCode.Space)) {
+        if (Input.GetKey(KeyCode.Backspace)) {
             manipulationFactor = 2;
             rewindTime = false;
             
