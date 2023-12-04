@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 7157142038011365863}
   - component: {fileID: -8579881525241640687}
   - component: {fileID: 8123554458486805281}
+  - component: {fileID: -7563546928167973596}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -194,3 +195,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 9184539430579694939, guid: 686827102d2e48f45a75989dd46aa514, type: 3}
   bulletSpeed: 1
+--- !u!50 &-7563546928167973596
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9210208930813044959}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
