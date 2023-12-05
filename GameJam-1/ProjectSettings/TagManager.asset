@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Bullet
   - Enemy
-  - DesignedPlayer
+  - Gun
   layers:
   - Default
   - TransparentFX

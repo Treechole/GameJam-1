@@ -9,8 +9,7 @@ public class BulletController : MonoBehaviour {
     [SerializeField] private float bulletSpeed = 10f;
     private float enemyShootingCooldown = 2f;
 
-    // Set bullet rigidbody so that it cant interact as physics object
-    // Set the player and enemy to rigidbodies
+    // Set the bullet as a trigger
 
     private void FixedUpdate() {
         if (this.gameObject.CompareTag("Bullet")) {
@@ -42,7 +41,7 @@ public class BulletController : MonoBehaviour {
         spawnedBullet.GetComponent<BulletController>().shotDir = bulletDir;
 
         float spawnOffset = 1/Mathf.Sqrt(2); // Temporary until a gun system is made
-        spawnedBullet.transform.position = new Vector3(player.position.x + spawnOffset * bulletDir.x, player.position.y + spawnOffset * bulletDir.y, 0);
+        spawnedBullet.transform.position = new Vector3(player.position.x + spawnOffset * bulletDir.x, player.position.y + spawnOffset * bulletDir.y);
 
         spawnedBullet.GetComponent<BulletController>().shotByPlayer = true;
     }
