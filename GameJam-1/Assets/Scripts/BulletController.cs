@@ -14,6 +14,12 @@ public class BulletController : MonoBehaviour {
     private void FixedUpdate() {
         if (this.gameObject.CompareTag("Bullet")) {
             transform.position += new Vector3(shotDir.x, shotDir.y, 0) * bulletSpeed * Time.fixedDeltaTime;
+
+            Vector3 screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+            Debug.Log(string.Format("Bullet Pos: ({0}, {1}), Screen Dimensions: ({2}, {3})", Mathf.Abs(transform.position.x), Mathf.Abs(transform.position.y), screenBounds.x, screenBounds.y));
+            if ((Mathf.Abs(transform.position.x) > screenBounds.x) || (Mathf.Abs(transform.position.y) > screenBounds.y)) {
+                Destroy(this.gameObject);
+            }
         }
     }
 
@@ -46,11 +52,19 @@ public class BulletController : MonoBehaviour {
         spawnedBullet.GetComponent<BulletController>().shotByPlayer = true;
     }
 
-    private void OnCollisionEnter2D(Collision2D character) {
+    private void OnTriggerEnter2D(Collider2D character) {
         if (this.gameObject.CompareTag("Bullet")) {
             if ((character.gameObject.CompareTag("Player") && !shotByPlayer) || (character.gameObject.CompareTag("Enemy") && shotByPlayer)) {
                 Destroy(this.gameObject);
             }
         }
     }
+
+    /* private void OnCollisionEnter2D(Collision2D character) {
+        if (this.gameObject.CompareTag("Bullet")) {
+            if ((character.gameObject.CompareTag("Player") && !shotByPlayer) || (character.gameObject.CompareTag("Enemy") && shotByPlayer)) {
+                Destroy(this.gameObject);
+            }
+        }
+    } */
 }
