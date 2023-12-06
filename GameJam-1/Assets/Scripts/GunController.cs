@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour {
     private Vector2 gunDir;
-    private float gunOffset = 1f; // Mathf.Sqrt(2);
+    private float gunOffset = 1/Mathf.Sqrt(2);
 
     private void Update() {
         if (this.gameObject.transform.parent != null) {
@@ -13,12 +13,10 @@ public class GunController : MonoBehaviour {
                 Transform player = this.gameObject.transform.parent;
 
                 SetGunDirection(player);
-                // Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
-                // gunDir = new Vector2(mouseLocation.x - player.position.x, mouseLocation.y - player.position.y).normalized;
 
-                Transform gunSprite = transform.GetChild(0);
+                Transform gunSprite = transform.Find("Sprite");
 
-                if ((gunDir.x < 0 && gunSprite.localScale.x > 0) || (gunDir.x > 0 && gunSprite.transform.localScale.x < 0)) {
+                if (gunDir.x * gunSprite.localScale.x < 0) {
                     gunSprite.localScale = new Vector3(-gunSprite.localScale.x, gunSprite.localScale.y, gunSprite.localScale.z);
                 }
 
@@ -31,12 +29,11 @@ public class GunController : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D character) {
         if (character.gameObject.CompareTag("Player")) {
             Transform player = character.gameObject.transform;
+            player.GetComponent<PlayerController>().SetGun();
 
             gameObject.transform.SetParent(player);
 
             SetGunDirection(player);
-            // Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
-            // gunDir = new Vector2(mouseLocation.x - character.transform.position.x, mouseLocation.y - character.transform.position.y).normalized;
 
             gameObject.transform.position = new Vector3(character.transform.position.x + gunOffset * gunDir.x, character.transform.position.y + gunOffset * gunDir.y);
         }

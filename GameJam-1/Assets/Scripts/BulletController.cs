@@ -9,6 +9,7 @@ public class BulletController : MonoBehaviour {
     [SerializeField] private float bulletSpeed = 10f;
     private float enemyShootingCooldown = 2f;
 
+    private float bulletDamage = 5f;
     // Make a gun system
     // Define better methods for Getting components of gameobjects - either define a fixed system - like sprite comes after this or that/ or get the components using names
 
@@ -43,20 +44,24 @@ public class BulletController : MonoBehaviour {
         GameObject spawnedBullet = Instantiate(bullet);
 
         Vector2 gunDir = gun.GetComponent<GunController>().GetGunDirection();
-        // Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
-        // Vector2 bulletDir = new Vector2(mouseLocation.x - player.position.x, mouseLocation.y - player.position.y).normalized;
         spawnedBullet.GetComponent<BulletController>().shotDir = gunDir;
 
-        spawnedBullet.transform.position = gun.transform.GetChild(0).GetChild(0).position;
-        // float spawnOffset = (float) 1; // Temporary until a gun system is made
-        // spawnedBullet.transform.position = new Vector3(gun.transform.position.x + spawnOffset * gunDir.x, gun.transform.position.y + spawnOffset * gunDir.y);
+        // spawnedBullet.transform.position = gun.transform.GetChild(0).GetChild(0).position;
+        spawnedBullet.transform.position = gun.transform.Find("Sprite/Gun Opening").position;
 
         spawnedBullet.GetComponent<BulletController>().shotByPlayer = true;
     }
 
     private void OnTriggerEnter2D(Collider2D character) {
         if (this.gameObject.CompareTag("Bullet")) {
-            if ((character.gameObject.CompareTag("Player") && !shotByPlayer) || (character.gameObject.CompareTag("Enemy") && shotByPlayer)) {
+            if (character.gameObject.CompareTag("Player") && !shotByPlayer) {
+                Destroy(this.gameObject);
+                GameObject player = character.gameObject;
+                player.GetComponent<HealthController>().DamageDealt(bulletDamage);
+                // Add a "get" bullet damage for different guns
+            }
+
+            if (character.gameObject.CompareTag("Enemy") && shotByPlayer) {
                 Destroy(this.gameObject);
             }
         }

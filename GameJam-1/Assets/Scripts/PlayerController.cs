@@ -12,6 +12,10 @@ public class PlayerController : MonoBehaviour {
     private List<Vector3> movements = new List<Vector3>();
     private BulletController bulletShooter;
 
+    private bool hasGun = false;
+
+    // Update the system to have gun shooter instead of bullet shooter - replace scripts from BulletController.cs to GunController.cs
+
     private void Awake() {
         bulletShooter = GetComponent<BulletController>();
     }
@@ -23,8 +27,9 @@ public class PlayerController : MonoBehaviour {
             PlayerMovement();
             RecordMovements();
 
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                bulletShooter.ShootGun(transform.GetChild(1).gameObject);
+            if (Input.GetKeyDown(KeyCode.Space) && hasGun) {
+                GameObject gun = FindWithTag(gameObject, "Gun");
+                bulletShooter.ShootGun(gun);
             }
         }
     }
@@ -80,4 +85,20 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void SetGun() {
+        hasGun = true;
+    }
+
+    private GameObject FindWithTag (GameObject parent, string tag) {
+        GameObject requiredChild = null;
+
+        foreach (Transform transform in parent.transform) {
+            if (transform.CompareTag(tag)) {
+                requiredChild = transform.gameObject;
+                break;
+            }
+        }
+
+        return requiredChild;
+    }
 }
