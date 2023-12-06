@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 9210208930813044959, guid: 1748a1930bf14c04bb77b9be6640392f, type: 3}
   player: {fileID: 1021279832}
-  maximumEnemies: 1
+  maximumEnemies: 0
   spawnDuration: 2
 --- !u!4 &484864305
 Transform:

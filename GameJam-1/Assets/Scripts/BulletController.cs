@@ -9,14 +9,14 @@ public class BulletController : MonoBehaviour {
     [SerializeField] private float bulletSpeed = 10f;
     private float enemyShootingCooldown = 2f;
 
-    // Set the bullet as a trigger
+    // Make a gun system
+    // Define better methods for Getting components of gameobjects - either define a fixed system - like sprite comes after this or that/ or get the components using names
 
     private void FixedUpdate() {
         if (this.gameObject.CompareTag("Bullet")) {
             transform.position += new Vector3(shotDir.x, shotDir.y, 0) * bulletSpeed * Time.fixedDeltaTime;
 
             Vector3 screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-            Debug.Log(string.Format("Bullet Pos: ({0}, {1}), Screen Dimensions: ({2}, {3})", Mathf.Abs(transform.position.x), Mathf.Abs(transform.position.y), screenBounds.x, screenBounds.y));
             if ((Mathf.Abs(transform.position.x) > screenBounds.x) || (Mathf.Abs(transform.position.y) > screenBounds.y)) {
                 Destroy(this.gameObject);
             }
@@ -39,15 +39,17 @@ public class BulletController : MonoBehaviour {
         }
     }
 
-    public void ShootBullet (Transform player) {
+    public void ShootGun (GameObject gun) {
         GameObject spawnedBullet = Instantiate(bullet);
-        Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
 
-        Vector2 bulletDir = new Vector2(mouseLocation.x - player.position.x, mouseLocation.y - player.position.y).normalized;
-        spawnedBullet.GetComponent<BulletController>().shotDir = bulletDir;
+        Vector2 gunDir = gun.GetComponent<GunController>().GetGunDirection();
+        // Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
+        // Vector2 bulletDir = new Vector2(mouseLocation.x - player.position.x, mouseLocation.y - player.position.y).normalized;
+        spawnedBullet.GetComponent<BulletController>().shotDir = gunDir;
 
-        float spawnOffset = 1/Mathf.Sqrt(2); // Temporary until a gun system is made
-        spawnedBullet.transform.position = new Vector3(player.position.x + spawnOffset * bulletDir.x, player.position.y + spawnOffset * bulletDir.y);
+        spawnedBullet.transform.position = gun.transform.GetChild(0).GetChild(0).position;
+        // float spawnOffset = (float) 1; // Temporary until a gun system is made
+        // spawnedBullet.transform.position = new Vector3(gun.transform.position.x + spawnOffset * gunDir.x, gun.transform.position.y + spawnOffset * gunDir.y);
 
         spawnedBullet.GetComponent<BulletController>().shotByPlayer = true;
     }
@@ -59,12 +61,4 @@ public class BulletController : MonoBehaviour {
             }
         }
     }
-
-    /* private void OnCollisionEnter2D(Collision2D character) {
-        if (this.gameObject.CompareTag("Bullet")) {
-            if ((character.gameObject.CompareTag("Player") && !shotByPlayer) || (character.gameObject.CompareTag("Enemy") && shotByPlayer)) {
-                Destroy(this.gameObject);
-            }
-        }
-    } */
 }

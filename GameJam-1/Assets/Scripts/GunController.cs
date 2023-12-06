@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GunController : MonoBehaviour {
+    private Vector2 gunDir;
     private float gunOffset = 1f; // Mathf.Sqrt(2);
 
     private void Update() {
@@ -11,8 +12,9 @@ public class GunController : MonoBehaviour {
             if (this.gameObject.CompareTag("Gun") && this.gameObject.transform.parent.CompareTag("Player")) {
                 Transform player = this.gameObject.transform.parent;
 
-                Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
-                Vector2 gunDir = new Vector2(mouseLocation.x - player.position.x, mouseLocation.y - player.position.y).normalized;
+                SetGunDirection(player);
+                // Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
+                // gunDir = new Vector2(mouseLocation.x - player.position.x, mouseLocation.y - player.position.y).normalized;
 
                 Transform gunSprite = transform.GetChild(0);
 
@@ -28,12 +30,24 @@ public class GunController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D character) {
         if (character.gameObject.CompareTag("Player")) {
-            gameObject.transform.SetParent(character.transform);
+            Transform player = character.gameObject.transform;
 
-            Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
-            Vector2 gunDir = new Vector2(mouseLocation.x - character.transform.position.x, mouseLocation.y - character.transform.position.y).normalized;
+            gameObject.transform.SetParent(player);
+
+            SetGunDirection(player);
+            // Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
+            // gunDir = new Vector2(mouseLocation.x - character.transform.position.x, mouseLocation.y - character.transform.position.y).normalized;
 
             gameObject.transform.position = new Vector3(character.transform.position.x + gunOffset * gunDir.x, character.transform.position.y + gunOffset * gunDir.y);
         }
+    }
+
+    private void SetGunDirection (Transform player) {
+        Vector3 mouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
+        gunDir = new Vector2(mouseLocation.x - player.position.x, mouseLocation.y - player.position.y).normalized;
+    }
+
+    public Vector2 GetGunDirection () {
+        return gunDir;
     }
 }

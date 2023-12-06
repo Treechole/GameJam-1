@@ -22,8 +22,9 @@ public class PlayerController : MonoBehaviour {
         } else {
             PlayerMovement();
             RecordMovements();
+
             if (Input.GetKeyDown(KeyCode.Space)) {
-                bulletShooter.ShootBullet(transform);
+                bulletShooter.ShootGun(transform.GetChild(1).gameObject);
             }
         }
     }
