@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour {
     private bool rewindTime = false;
     private List<Vector3> movements = new List<Vector3>();
     private BulletController bulletShooter;
-
+    private float maximumHealth = 100f;
     private bool hasGun = false;
 
     // Update the system to have gun shooter instead of bullet shooter - replace scripts from BulletController.cs to GunController.cs
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
             PlayerMovement();
             RecordMovements();
 
-            if (Input.GetKeyDown(KeyCode.Space) && hasGun) {
+            if (Input.GetKeyDown(KeyCode.Mouse0) && hasGun) {
                 GameObject gun = FindWithTag(gameObject, "Gun");
                 bulletShooter.ShootGun(gun);
             }
@@ -100,5 +100,9 @@ public class PlayerController : MonoBehaviour {
         }
 
         return requiredChild;
+    }
+
+    public float GetMaxHealth () {
+        return maximumHealth;
     }
 }

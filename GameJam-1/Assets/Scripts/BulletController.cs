@@ -54,15 +54,11 @@ public class BulletController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D character) {
         if (this.gameObject.CompareTag("Bullet")) {
-            if (character.gameObject.CompareTag("Player") && !shotByPlayer) {
+            if ((character.gameObject.CompareTag("Player") && !shotByPlayer) || (character.gameObject.CompareTag("Enemy") && shotByPlayer))
+            {
                 Destroy(this.gameObject);
-                GameObject player = character.gameObject;
-                player.GetComponent<HealthController>().DamageDealt(bulletDamage);
+                character.gameObject.GetComponent<HealthController>().DamageDealt(bulletDamage);
                 // Add a "get" bullet damage for different guns
-            }
-
-            if (character.gameObject.CompareTag("Enemy") && shotByPlayer) {
-                Destroy(this.gameObject);
             }
         }
     }

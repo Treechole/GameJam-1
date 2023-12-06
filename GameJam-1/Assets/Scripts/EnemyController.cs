@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour {
     private GameObject player;
     private BulletController bulletShooter;
     [SerializeField] private float rotateSpeed = 5f;
+    private float maximumHealth = 20f;
 
     private void Awake() {
         player = GameObject.Find("/Player");
@@ -28,5 +29,9 @@ public class EnemyController : MonoBehaviour {
 
         Quaternion lookAtRotation = Quaternion.Euler(0, 0, Mathf.Atan((player.transform.position.y - transform.position.y) / (player.transform.position.x - transform.position.x))*(180/Mathf.PI) + dir_rotation);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookAtRotation, Time.deltaTime * rotateSpeed);
+    }
+
+    public float GetMaxHealth () {
+        return maximumHealth;
     }
 }
