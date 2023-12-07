@@ -33,8 +33,14 @@ public class BulletController : MonoBehaviour {
             Vector2 bulletDir = new Vector2(player.position.x - enemy.position.x, player.position.y - enemy.position.y).normalized;
             spawnedBullet.GetComponent<BulletController>().shotDir = bulletDir;
 
+            int dir_rotation = -90;
+            if (bulletDir.x > 0) {
+                dir_rotation = +90;
+            }
+
             float spawnOffset = 1/Mathf.Sqrt(2); // Temporary until a gun system is made
             spawnedBullet.transform.position = new Vector3(enemy.position.x + spawnOffset * bulletDir.x, enemy.position.y + spawnOffset * bulletDir.y, 0);
+            spawnedBullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan(bulletDir.y/bulletDir.x) * (180/Mathf.PI) - dir_rotation);
 
             spawnedBullet.GetComponent<BulletController>().shotByPlayer = false;
         }
@@ -42,12 +48,19 @@ public class BulletController : MonoBehaviour {
 
     public void ShootGun (GameObject gun) {
         GameObject spawnedBullet = Instantiate(bullet);
+        gun.GetComponent<AmmoController>().AmmoFired();
 
         Vector2 gunDir = gun.GetComponent<GunController>().GetGunDirection();
         spawnedBullet.GetComponent<BulletController>().shotDir = gunDir;
 
+        int dir_rotation = -90;
+        if (gunDir.x > 0) {
+            dir_rotation = +90;
+        }
+
         // spawnedBullet.transform.position = gun.transform.GetChild(0).GetChild(0).position;
         spawnedBullet.transform.position = gun.transform.Find("Sprite/Gun Opening").position;
+        spawnedBullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan(gunDir.y/gunDir.x) * (180/Mathf.PI) - dir_rotation);
 
         spawnedBullet.GetComponent<BulletController>().shotByPlayer = true;
     }

@@ -29,7 +29,9 @@ public class PlayerController : MonoBehaviour {
 
             if (Input.GetKeyDown(KeyCode.Mouse0) && hasGun) {
                 GameObject gun = FindWithTag(gameObject, "Gun");
-                bulletShooter.ShootGun(gun);
+                if (gun.GetComponent<AmmoController>().checkAmmo()) {
+                    bulletShooter.ShootGun(gun);
+                }
             }
         }
     }
@@ -89,7 +91,11 @@ public class PlayerController : MonoBehaviour {
         hasGun = true;
     }
 
-    private GameObject FindWithTag (GameObject parent, string tag) {
+    public bool CheckGun() {
+        return hasGun;
+    }
+
+    public GameObject FindWithTag (GameObject parent, string tag) {
         GameObject requiredChild = null;
 
         foreach (Transform transform in parent.transform) {

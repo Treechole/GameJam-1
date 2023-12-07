@@ -28,14 +28,17 @@ public class GunController : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D character) {
         if (character.gameObject.CompareTag("Player")) {
-            Transform player = character.gameObject.transform;
-            player.GetComponent<PlayerController>().SetGun();
+            if (!character.gameObject.GetComponent<PlayerController>().CheckGun()) {
+                Transform player = character.gameObject.transform;
+                player.GetComponent<PlayerController>().SetGun();
 
-            gameObject.transform.SetParent(player);
+                gameObject.transform.SetParent(player);
 
-            SetGunDirection(player);
+                SetGunDirection(player);
 
-            gameObject.transform.position = new Vector3(character.transform.position.x + gunOffset * gunDir.x, character.transform.position.y + gunOffset * gunDir.y);
+                gameObject.transform.position = new Vector3(character.transform.position.x + gunOffset * gunDir.x, character.transform.position.y + gunOffset * gunDir.y);
+                gameObject.GetComponent<AmmoController>().UpdateAmmoInfo();
+            }
         }
     }
 
