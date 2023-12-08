@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Gun
   - Ammunation
+  - Blood Particle System
   layers:
   - Default
   - TransparentFX

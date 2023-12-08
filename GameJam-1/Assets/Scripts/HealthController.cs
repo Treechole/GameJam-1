@@ -26,10 +26,11 @@ public class HealthController : MonoBehaviour {
     public void DamageDealt(float damage) {
         if (health != 0) {
             health -= damage;
+            FindWithTag(gameObject, "Blood Particle System").GetComponent<BloodGenerator>().BloodSpurt();
             UpdateHealthBar();
 
             if (health == 0) {
-                CharcterDied();
+                CharacterDied();
             }
         }
     }
@@ -44,10 +45,23 @@ public class HealthController : MonoBehaviour {
         }
     }
 
-    private void CharcterDied () {
+    private void CharacterDied () {
         if (this.gameObject.CompareTag("Player")) {
             Debug.Log("Game Over!");
         }
         Destroy(this.gameObject);
+    }
+
+    public GameObject FindWithTag (GameObject parent, string tag) {
+        GameObject requiredChild = null;
+
+        foreach (Transform transform in parent.transform) {
+            if (transform.CompareTag(tag)) {
+                requiredChild = transform.gameObject;
+                break;
+            }
+        }
+
+        return requiredChild;
     }
 }
