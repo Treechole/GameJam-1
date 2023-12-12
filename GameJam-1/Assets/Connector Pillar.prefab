@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9202152565967414501}
   - component: {fileID: 7937784985114013520}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Top Brick Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2707163163471339904}
   - component: {fileID: 8405304305444436187}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillar Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,9 +178,9 @@ GameObject:
   m_Component:
   - component: {fileID: 535781330909552062}
   - component: {fileID: 5395126129353088839}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Connector Pillar
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

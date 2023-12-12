@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 870687922887425475}
   - component: {fileID: 5649094952170320752}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Side Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7553148359597152755}
   - component: {fileID: 6084974053729333480}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

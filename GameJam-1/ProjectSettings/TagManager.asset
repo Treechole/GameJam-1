@@ -9,6 +9,7 @@ TagManager:
   - Gun
   - Ammunation
   - Blood Particle System
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Walls
   - 
   - 
   - 

@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1415384930058278984}
   - component: {fileID: 6458201969744550929}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Connector Block
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5954699760299373360}
   - component: {fileID: 572313135873758055}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Block Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
