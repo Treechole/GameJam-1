@@ -7,6 +7,10 @@ public class DamagingPlatformController : MonoBehaviour {
     private float secondsPerBlow = 2f;
     private bool initiatedDamage = false;
 
+    private void Update() {
+        Debug.Log(initiatedDamage);
+    }
+
     private void OnTriggerStay2D(Collider2D character) {
         if (character.gameObject.CompareTag("Player")) {
             if (!initiatedDamage) {

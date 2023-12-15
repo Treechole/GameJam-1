@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,114 +63,9 @@ public class PlayerController : MonoBehaviour {
 
     private void PlayerMovement() {
         Vector2 moveDir = MovementInputNormalized();
-
-        Vector3 raycastPosition = transform.position;
-        Vector3 raycastScale = transform.localScale;
-        float raycastAngle = Mathf.Atan(moveDir.y/moveDir.x) * (180/Mathf.PI);
-        // float raycastOffest = (float) 0.05;
-        // if (moveDir.x == 0) {
-        //     raycastPosition = transform.position + new Vector3(0, transform.localScale.y + raycastOffest, 0);
-        //     raycastScale = new Vector3(1, raycastOffest, 0);
-        // } else if (moveDir.y == 0) {
-        //     raycastPosition = transform.position + new Vector3(transform.localScale.x + raycastOffest, 0, 0);
-        //     raycastScale = new Vector3(raycastOffest, 1, 0);
-        // } else {
-        //     raycastPosition = transform.position + new Vector3(transform.localScale.x + raycastOffest, transform.localScale.y + raycastOffest, 0).normalized;
-        //     raycastScale = new Vector3(raycastOffest, 1, 0);
-        // }
-
         float moveDistance = Time.deltaTime * playerSpeed;
 
-        // bool canMove = !Physics2D.BoxCast(transform.position, transform.localScale, Mathf.Atan(moveDir.y/moveDir.x) * (180/Mathf.PI), moveDir, moveDistance);
-        RaycastHit2D[] characterHit = Physics2D.BoxCastAll(raycastPosition, raycastScale, raycastAngle, moveDir, moveDistance);
-        // string debugOutput = "";
-        GameObject character = null;
-        if (characterHit.Length >= 1) {
-            // foreach(RaycastHit2D castHit in characterHit) {
-            //     debugOutput += castHit.collider.name + ", ";
-            // }
-            character = characterHit[0].collider.gameObject;
-            if (characterHit[0].collider.CompareTag("Player")){
-                if (characterHit.Length >= 2) {
-                    character = characterHit[1].collider.gameObject;
-                } else {
-                    character = null;
-                }
-            }
-
-            // Debug.Log(debugOutput);
-        }
-
-        if (character != null) {
-            if (character.CompareTag("Wall")) {
-                Vector2 moveDirX = new Vector2(moveDir.x, 0);
-                Vector2 moveDirY = new Vector2(0, moveDir.y);
-
-                float raycastAngleX = 0;
-                float raycastAngleY = 90;
-
-                RaycastHit2D[] characterHitX = Physics2D.BoxCastAll(raycastPosition, raycastScale, raycastAngleX, moveDirX, moveDistance);
-                RaycastHit2D[] characterHitY = Physics2D.BoxCastAll(raycastPosition, raycastScale, raycastAngleY, moveDirY, moveDistance);
-                // RaycastHit2D characterHitY = Physics2D.BoxCast(transform.position, transform.localScale, Mathf.Atan(moveDir.y/moveDir.x) * (180/Mathf.PI), moveDirY, moveDistance);
-
-                // GetComponent<RayCastVisualiser>().showRaycast(raycastPosition + new Vector3(moveDir.x, 0, 0).normalized, raycastScale);
-                // GetComponent<RayCastVisualiser>().showRaycast(raycastPosition + new Vector3(0, moveDir.y, 0).normalized, raycastScale);
-
-                GameObject characterX = null;
-                if (characterHitX.Length >= 1) {
-                    characterX = characterHitX[0].collider.gameObject;
-                    if (characterHitX[0].collider.CompareTag("Player")){
-                        if (characterHitX.Length >= 2) {
-                            characterX = characterHitX[1].collider.gameObject;
-                        } else {
-                            characterX = null;
-                        }
-                    }
-                }
-
-                GameObject characterY = null;
-                if (characterHitY.Length >= 1) {
-                    characterY = characterHitY[0].collider.gameObject;
-                    if (characterHitY[0].collider.CompareTag("Player")){
-                        if (characterHitY.Length >= 2) {
-                            characterY = characterHitY[1].collider.gameObject;
-                        } else {
-                            characterY = null;
-                        }
-                    }
-                }
-
-                Debug.Log(string.Format("X: {0}, Y: {1}", characterX, characterY));
-
-                if (characterX == null) {
-                    moveDir = new Vector2(moveDir.x, 0);
-                } else {
-                    if (!characterX.CompareTag("Wall")) {
-                        moveDir = new Vector2(moveDir.x, 0);
-                    }
-                }
-                
-                if (characterY == null) {
-                    moveDir = new Vector2(0, moveDir.y);
-                } else {
-                    if (!characterY.CompareTag("Wall")) {
-                        moveDir = new Vector2(0, moveDir.y);
-                    }
-                }
-
-                if (characterX != null && characterY != null) {
-                    if (characterY.CompareTag("Wall") && characterY.CompareTag("Wall")) {
-                        moveDir = Vector2.zero;
-                    }
-                }
-
-                if (characterX == null && characterY == null) {
-                    moveDir = new Vector2(moveDirX.x, moveDirY.y);
-                }
-            }
-        }
-
-        moveDir = moveDir.normalized;
+        moveDir = ChangeMovementForWall(moveDir);
         transform.position += new Vector3(moveDir.x, moveDir.y, 0) * moveDistance;
     }
 
@@ -226,9 +122,46 @@ public class PlayerController : MonoBehaviour {
         return maximumHealth;
     }
 
-    // private void OnDrawGizmos() {
-    //     Gizmos.color = Color.yellow;
-    //     Gizmos.DrawWireCube(transform.position + new Vector3(moveDir.x, 0, 0).normalized, transform.localScale);
-    //     Gizmos.DrawWireCube(transform.position + new Vector3(0, moveDir.y, 0).normalized, transform.localScale);
-    // }
+    private bool IsCollidingWithWall(RaycastHit2D[] hits2D) {
+        bool isColliding = false;
+
+        foreach(RaycastHit2D hit2D in hits2D) {
+            if (hit2D.collider.CompareTag("Wall")) {
+                isColliding = true;
+                break; 
+            }
+        }
+
+        return isColliding;
+    }
+
+    private Vector2 ChangeMovementForWall(Vector2 moveDir) {
+        Vector3 raycastPosition = transform.position;
+        Vector3 raycastScale = transform.localScale;
+
+        Vector2 moveDirX = new Vector2(moveDir.x, 0);
+        float raycastAngleX = 0;
+
+        Vector2 moveDirY = new Vector2(0, moveDir.y);
+        float raycastAngleY = 90;
+
+        float moveDistance = Time.deltaTime * playerSpeed;
+
+        RaycastHit2D[] characterHitsX = Physics2D.BoxCastAll(raycastPosition, raycastScale, raycastAngleX, moveDirX, moveDistance);
+        RaycastHit2D[] characterHitsY = Physics2D.BoxCastAll(raycastPosition, raycastScale, raycastAngleY, moveDirY, moveDistance);
+
+        bool wallAtX = IsCollidingWithWall(characterHitsX);
+        bool wallAtY = IsCollidingWithWall(characterHitsY);
+
+        if (wallAtX && wallAtY) {
+            return Vector2.zero;
+        } else if (wallAtX && !wallAtY) {
+            return moveDirY.normalized;
+        } else if (!wallAtX && wallAtY) {
+            return moveDirX.normalized;
+        } else {
+            return moveDir;
+        }
+    }
+
 }
