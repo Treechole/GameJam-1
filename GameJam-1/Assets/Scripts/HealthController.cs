@@ -9,9 +9,9 @@ public class HealthController : MonoBehaviour {
     private float maxHealth;
     private float health;
     private GameObject healthBarSprite;
-    private Color fullHealthColor = new Color(0, (float) 0.7058824, 0, 1);
-    private Color halfHealthColor = new Color((float)0.7058824, (float)0.7058824, 0, 1);
-    private Color noHealthColor = new Color((float) 0.7058824, 0, 0, 1);
+    private Color fullHealthColor = new Color(0, 0.7058824f, 0, 1);
+    private Color halfHealthColor = new Color(0.7058824f, 0.7058824f, 0, 1);
+    private Color noHealthColor = new Color(0.7058824f, 0, 0, 1);
 
     private void Awake() {
         if (this.gameObject.CompareTag("Player")) {
@@ -23,7 +23,7 @@ public class HealthController : MonoBehaviour {
         healthBarSprite = transform.Find("Health Bar/Sprite").gameObject;
     }
 
-    public void DamageDealt(float damage) {
+    public void DealDamage(float damage) {
         if (health != 0) {
             health -= damage;
             FindWithTag(gameObject, "Blood Particle System").GetComponent<BloodGenerator>().BloodSpurt();

@@ -4,37 +4,49 @@ using UnityEngine;
 
 public class DamagingPlatformController : MonoBehaviour {
     private float damagePerBlow = 10f;
-    private float secondsPerBlow = 2f;
-    private bool initiatedDamage = false;
+    private float rechargeTime = 2f;
+    private bool playerOnPlatform = false;
+    private bool recharged = true;
+    private bool currentlyRecharging = false;
+    private GameObject player = null;
 
     private void Update() {
-        Debug.Log(initiatedDamage);
+        if (playerOnPlatform) {
+            DamagePlayer();
+        }
+
+        if (!recharged && !currentlyRecharging) {
+            StartCoroutine(RechargePlatform());
+        }
     }
 
-    private void OnTriggerStay2D(Collider2D character) {
-        if (character.gameObject.CompareTag("Player")) {
-            if (!initiatedDamage) {
-                RecursiveDamage(character.gameObject);
-            }
-            initiatedDamage = true;
+    private void OnTriggerEnter2D(Collider2D character) {
+        if (character.CompareTag("Player")) {
+            playerOnPlatform = true;
+            player = character.gameObject;
+        }
+    }
+
+    private void DamagePlayer() {
+        if (recharged) {
+            HealthController playerHealthSystem = player.GetComponent<HealthController>();
+
+            playerHealthSystem.DealDamage(damagePerBlow);
+            recharged = false;
         }
     }
 
     private void OnTriggerExit2D(Collider2D character) {
-        if (character.gameObject.CompareTag("Player")) {
-            initiatedDamage = false;
+        if (character.CompareTag("Player")) {
+            playerOnPlatform = false;
+            player = null;
         }
     }
 
-    private void RecursiveDamage(GameObject player) {
-        player.GetComponent<HealthController>().DamageDealt(damagePerBlow);
-        StartCoroutine(RechargeWait(player));
-    }
-
-    private IEnumerator RechargeWait(GameObject player) {
-        yield return new WaitForSeconds(secondsPerBlow);
-        if (initiatedDamage) {
-                RecursiveDamage(player);
-            }
+    private IEnumerator RechargePlatform() {
+        currentlyRecharging = true;
+        yield return new WaitForSeconds(rechargeTime);
+        recharged = true;
+        currentlyRecharging = false;
     }
 }

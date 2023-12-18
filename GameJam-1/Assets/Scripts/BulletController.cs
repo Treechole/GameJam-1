@@ -70,7 +70,7 @@ public class BulletController : MonoBehaviour {
             if ((character.gameObject.CompareTag("Player") && !shotByPlayer) || (character.gameObject.CompareTag("Enemy") && shotByPlayer))
             {
                 Destroy(this.gameObject);
-                character.gameObject.GetComponent<HealthController>().DamageDealt(bulletDamage);
+                character.gameObject.GetComponent<HealthController>().DealDamage(bulletDamage);
                 // Add a "get" bullet damage for different guns
             }
         }

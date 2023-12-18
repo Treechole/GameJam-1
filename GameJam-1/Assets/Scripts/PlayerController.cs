@@ -63,9 +63,9 @@ public class PlayerController : MonoBehaviour {
 
     private void PlayerMovement() {
         Vector2 moveDir = MovementInputNormalized();
-        float moveDistance = Time.deltaTime * playerSpeed;
+        float moveDistance = playerSpeed * Time.deltaTime;
 
-        moveDir = ChangeMovementForWall(moveDir);
+        moveDir = ChangeMovementIfWall(moveDir);
         transform.position += new Vector3(moveDir.x, moveDir.y, 0) * moveDistance;
     }
 
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour {
         return isColliding;
     }
 
-    private Vector2 ChangeMovementForWall(Vector2 moveDir) {
+    private Vector2 ChangeMovementIfWall(Vector2 moveDir) {
         Vector3 raycastPosition = transform.position;
         Vector3 raycastScale = transform.localScale;
 
