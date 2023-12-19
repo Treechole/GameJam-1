@@ -10,6 +10,9 @@ TagManager:
   - Ammunation
   - Blood Particle System
   - Wall
+  - Flag
+  - Start Area
+  - Flag Area
   layers:
   - Default
   - TransparentFX
